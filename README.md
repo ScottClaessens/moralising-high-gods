@@ -12,9 +12,7 @@ To run this code, you will need to [install R](https://www.r-project.org/) and
 the following R packages:
 
 ```r
-install.packages(
-  c("targets", "tidyverse")
-)
+install.packages(c("ape", "coevolve", "targets", "tidyverse"))
 ```
 
 ### Execute code
