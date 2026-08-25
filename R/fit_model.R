@@ -15,7 +15,10 @@ fit_model <- function(data, tree) {
     ),
     id = "xd_id",
     tree = tree,
+    estimate_correlated_drift = FALSE,
     nuts_sampler = "nutpie",
+    iter_warmup = 3000,
+    iter_sampling = 3000,
     chains = 4,
     cores = 4L,
     seed = 123

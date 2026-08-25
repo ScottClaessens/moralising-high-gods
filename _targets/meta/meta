@@ -4,10 +4,7 @@ data|stem|787c5e52680ae36a|237276f659722970|0bf892f29cdeffc7|33550471||t20689.54
 tree_file|stem|035f4243fe0244e3|4b011a4d4f6bf135|2c530c1562a7fbd1|-419834672|tree/dplace2.nxs|t20689.5484351629s|s49727383b|49727383|file|local|vector|||1.079||
 tree|stem|9c6b43c3e4cc5d80|c77021f1bbaff69b|b44580be845ca4b7|437279712||t20689.5584124495s|s18549658b|18549658|rds|local|vector|||5.135||
 tree_sample|stem|588ad0b9c3a8e04b|4d6c9812c3470f4e|264c96e0c4fe64b3|1602195511||t20689.5584138633s|s189187b|189187|rds|local|vector|||0.001||
-fit_model|function|e46669903df1cf1a
+fit_model|function|0aaddf4dbe7a62ce
 load_data|function|d8571e40c83afc3c
 load_tree|function|dcfe1ab6f3d97533
-fit1|stem||7684d282bc7db030|f7730aab6067fad4|-443962481||t20689.5563284768s||0|rds|local|vector|||9.406||nutpie sampling failed: argument 'cores': 'float' object cannot be interpreted as an integer
-fit_model|function|9068f803db282bc3
-load_data|function|d8571e40c83afc3c
-load_tree|function|dcfe1ab6f3d97533
+fit1|stem|51f0530a6fae85b7|7684d282bc7db030|91b4229c6ff42a35|-443962481||t20689.9397388361s|s12456970891b|12456970891|rds|local|vector|||4621.08||
