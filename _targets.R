@@ -16,6 +16,9 @@ list(
   tar_target(tree_sample, tree[sample(1:1000, size = 10)]),
 
   # fit models
-  tar_target(fit1, fit_model(data, tree_sample))
+  tar_target(fit1, fit_model(data, tree_sample)),
+
+  # plot cross effects
+  tar_target(plot_cross_selection, plot_cross_effects(fit1))
 
 )
