@@ -1,6 +1,33 @@
+options(tidyverse.quiet = TRUE)
 library(targets)
+library(tarchetypes)
+library(tidyverse)
 tar_option_set(packages = c("ape", "coevolve", "tidyverse"))
 tar_source()
+
+# grid over model types
+model_grid <-
+  tar_map(
+    values = expand_grid(
+      region = c("Global", "Africa", "Americas", "Eurasia", "Sahul"),
+      geographic_control = c(TRUE, FALSE)
+    ),
+    # fit model
+    tar_target(
+      fit,
+      fit_model(
+        data = data,
+        tree = tree_sample,
+        region = if (region == "Global") NULL else region,
+        geographic_control = geographic_control
+      )
+    ),
+    # extract standardised cross-selection effects
+    tar_target(
+      effects_std,
+      extract_cross_effects(fit, region, geographic_control)
+    )
+  )
 
 list(
 
@@ -15,10 +42,11 @@ list(
   # get random sample of trees for analysis
   tar_target(tree_sample, tree[sample(1:1000, size = 10)]),
 
-  # fit models
-  tar_target(fit1, fit_model(data, tree_sample)),
+  # loop over model types and combine resulting effects
+  model_grid,
+  tar_combine(effects_std, model_grid[[2]]),
 
-  # plot cross effects
-  tar_target(plot_cross_selection, plot_cross_effects(fit1))
+  # plot results
+  tar_target(plot_effects, plot_results(effects_std))
 
 )
