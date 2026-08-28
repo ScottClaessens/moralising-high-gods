@@ -7,15 +7,20 @@
 
 **Author:** Oliver Sheehan
 
-**Date created:** 24th August 2026
+**Date created:** 28th August 2026
 
-**Dimensions:** 1127 rows x 4 columns
+**Dimensions:** 1127 rows x 6 columns
 
 **Data dictionary:**
 
-- `society_xd_id` - Character. Society xd_id in D-PLACE (see 
+- `society_xd_id_from_EA_1291` - Character. Society xd_id in D-PLACE (see 
   [here](https://d-place.org/glossary#q9) for more information).
-- `length` - Integer. Number of characters in society xd_id.
+- `society_xd_id_from_EA_1291_length` - Integer. Number of characters in society
+  xd_id.
+- `region_1` - Character. Major world region based on natural monophyletic tree 
+  groupings. One of: Africa, Americas, Eurasia, and Sahul.
+- `Latitude` - Numeric. Latitude of society in decimal degrees.
+- `Longitude` - Numeric. Longitude of society in decimal degrees.
 - `EA033` - Ordinal. Level of jurisdictional hierarchy beyond the local 
   community: 1 = No political authority beyond community (e.g., autonomous bands
   and villages); 2 = One level (e.g., petty chiefdoms); 3	= Two levels (e.g., 
