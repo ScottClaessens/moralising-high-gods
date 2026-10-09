@@ -8,9 +8,14 @@ tar_source()
 # grid over model types
 model_grid <-
   tar_map(
-    values = expand_grid(
-      region = c("Global", "Africa", "Americas", "Eurasia", "Sahul"),
-      geographic_control = c(TRUE, FALSE)
+    values = tribble(
+      ~region, ~geographic_control,
+      "Global", FALSE,
+      "Global", TRUE,
+      "Africa", FALSE,
+      "Americas", FALSE,
+      "Eurasia", FALSE,
+      "Sahul", FALSE
     ),
     # fit model
     tar_target(
@@ -31,9 +36,20 @@ model_grid <-
 
 list(
 
+  # get file paths
+  tar_target(
+    ea_data_file,
+    "data/ea_1127_ea033_MHGs/ea_1127_ea033_MHGs.xlsx",
+    format = "file"
+  ),
+  tar_target(
+    abrahamization_data_file,
+    "data/Abrahamization_09_10_2026/Abrahamization_09_10_2026.xlsx",
+    format = "file"
+  ),
+
   # load data
-  tar_target(data_file, "data/ea_1127_ea033_MHGs.xlsx", format = "file"),
-  tar_target(data, load_data(data_file)),
+  tar_target(data, load_data(ea_data_file, abrahamization_data_file)),
 
   # load tree
   tar_target(tree_file, "tree/dplace2.nxs", format = "file"),
@@ -44,9 +60,9 @@ list(
 
   # loop over model types and combine resulting effects
   model_grid,
-  tar_combine(effects_std, model_grid[[2]]),
+  tar_combine(effects_std, model_grid[[2]])#,
 
   # plot results
-  tar_target(plot_effects, plot_results(effects_std))
+  #tar_target(plot_effects, plot_results(effects_std))
 
 )
