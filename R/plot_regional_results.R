@@ -1,11 +1,11 @@
-#' Plot standardised cross-selection effects from models
+#' Plot standardised cross-selection effects across regions
 #'
 #' @param effects_std Tibble of posterior draws for standardised cross-selection
 #'   effects
 #'
 #' @returns A ggplot object
 #'
-plot_results <- function(effects_std) {
+plot_regional_results <- function(effects_std) {
 
   # get vector of regions
   regions <- c(
@@ -19,6 +19,7 @@ plot_results <- function(effects_std) {
   # get data for plot
   data <-
     effects_std |>
+    filter(!geographic_control) |>
     mutate(
       region = factor(
         case_when(
@@ -29,14 +30,6 @@ plot_results <- function(effects_std) {
           region == "Sahul"    ~ regions[5]
         ),
         levels = regions
-      ),
-      geographic_control = factor(
-        ifelse(
-          geographic_control,
-          "With geographic control",
-          "No geographic control"
-        ),
-        levels = paste(c("No", "With"), "geographic control")
       )
     ) |>
     unnest(effect)
@@ -75,7 +68,6 @@ plot_results <- function(effects_std) {
       position = position_dodge(width = 0.25),
       point_colour = "black"
     ) +
-    facet_wrap(. ~ geographic_control) +
     labs(
       x = "Cross-selection effect (standardised)",
       y = "World region"
@@ -99,10 +91,10 @@ plot_results <- function(effects_std) {
 
   # save plot
   ggsave(
-    filename = "plots/results.pdf",
+    filename = "plots/regional_results.pdf",
     plot = out,
     height = 4,
-    width = 5
+    width = 4.5
   )
 
   # clean up

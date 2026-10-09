@@ -8,9 +8,10 @@ tar_option_set(
 )
 tar_source()
 
-# grid over model types
-model_grid <-
+# list model types
+model_list <-
   tar_map(
+
     values = tribble(
       ~region, ~geographic_control,
       "Global", FALSE,
@@ -20,6 +21,7 @@ model_grid <-
       "Eurasia", FALSE,
       "Sahul", FALSE
     ),
+
     # fit model
     tar_target(
       fit,
@@ -30,11 +32,26 @@ model_grid <-
         geographic_control = geographic_control
       )
     ),
+
+    # print model summary
+    tar_target(
+      summary,
+      print_model_summary(
+        fit,
+        paste0(
+          "outputs/summary_", region,
+          ifelse(geographic_control, "_withGeoControl", ""),
+          ".txt"
+        )
+      )
+    ),
+
     # extract standardised cross-selection effects
     tar_target(
       effects_std,
       extract_cross_effects(fit, region, geographic_control)
     )
+
   )
 
 list(
@@ -65,13 +82,13 @@ list(
   tar_target(plot_mcc_tree, plot_tree(data, mcc_tree)),
 
   # get random sample of trees for analysis
-  tar_target(tree_sample, tree[sample(1:1000, size = 10)])#,
+  tar_target(tree_sample, tree[sample(1:1000, size = 10)]),
 
   # loop over model types and combine resulting effects
-  #model_grid,
-  #tar_combine(effects_std, model_grid[[2]]),
+  model_list,
+  tar_combine(effects_std, model_list[["effects_std"]]),
 
-  # plot results
-  #tar_target(plot_effects, plot_results(effects_std))
+  # plot regional results
+  tar_target(plot_regional_effects, plot_regional_results(effects_std))
 
 )

@@ -5,12 +5,33 @@ data|stem|6cbc7e221b02711f|006d9b2bac442eec|40d73aab6ccb58e9|33550471||t20735.46
 tree_file|stem|035f4243fe0244e3|4b011a4d4f6bf135|2c530c1562a7fbd1|-419834672|tree/dplace2.nxs|t20689.5484351629s|s49727383b|49727383|file|local|vector|||0.235||
 tree|stem|c39c390d27131dfa|c77021f1bbaff69b|b44580be845ca4b7|437279712||t20735.4806463958s|s18549655b|18549655|rds|local|vector|||5.217||
 tree_sample|stem|c80bca15231467bd|4d6c9812c3470f4e|43302c8ce902d209|1602195511||t20735.4806478399s|s189189b|189189|rds|local|vector|||0||
-fit_Global_TRUE|stem||f24ab1bfcad2a9ec|2d1b13fc969d0fdd|-779082390||t20735.4836822787s||0|rds|local|vector|||43.1||unused argument (cores = 8)
 mcc_tree|stem|68e7d373f5ba1836|c47da3594f89d0e8|43302c8ce902d209|-2069454262||t20735.4989625421s|s24501b|24501|rds|local|vector|||8.48||
+plot_mcc_tree|stem|16d111024590c431|0979ceba55c30d7b|820af2475aee7d98|1316125423||t20735.5215177264s|s1852137b|1852137|rds|local|vector|||1.038||
+fit_Global_FALSE|stem|b5732ca4dc143468|9fe832f8ec536023|711e0c1570015650|1891030165||t20735.5908433796s|s12704998194b|12704998194|rds|local|vector|||5061.64||
+effects_std_Global_FALSE|stem|54d84c436c28231f|7864f21bd7b6c214|662b88f0d7567f55|-1771945342||t20735.5913212933s|s183147b|183147|rds|local|vector|||1.303||
+summary_Global_FALSE|stem|33c09107535bf123|ab96bee05f4de258|3539f15e4d94e293|177066807||t20735.6136759567s|s44b|44|rds|local|vector|||733.577||
+fit_Africa_FALSE|stem|2e4ed668c60dfe0a|98cf51bea654252e|711e0c1570015650|376128680||t20735.6331830728s|s4419193137b|4419193137|rds|local|vector|||1249.958||
+summary_Africa_FALSE|stem|33c09107535bf123|6c3e50dd85b13d03|00db55bd6c9b3fc5|-2136540613||t20735.636049966s|s44b|44|rds|local|vector|||233.759||
+effects_std_Africa_FALSE|stem|6b70bcc8e42e1fa5|0370b225ca5233e0|8e56961870ddbe4a|-315657662||t20735.6361998604s|s184413b|184413|rds|local|vector|||0.316||
+plot_results|function|4ee98c2c7158bc45
+fit_Americas_FALSE|stem|f2be339a24ab20f8|2a4f3416c02fe65e|711e0c1570015650|858005395||t20735.6529643459s|s3735885956b|3735885956|rds|local|vector|||924.399||
+fit_Eurasia_FALSE|stem|f2c184130402f49d|f86aa19c5ddd18fc|711e0c1570015650|-1726659452||t20735.6675569694s|s4069413796b|4069413796|rds|local|vector|||1143.408||
+fit_Sahul_FALSE|stem|29789f80c7f2222f|6f1a69e3a854d5d1|711e0c1570015650|1073134878||t20735.6688213836s|s507896034b|507896034|rds|local|vector|||94.719||
+summary_Americas_FALSE|stem|33c09107535bf123|112c9f65d0e43dfe|894a356e1a226231|1288025400||t20735.6712274942s|s44b|44|rds|local|vector|||196.605||
+effects_std_Americas_FALSE|stem|68fe85e8183979b9|e7421ceb54b093e8|7bde6da3db6662f4|-993417341||t20735.6713549985s|s183452b|183452|rds|local|vector|||0.259||
+summary_Eurasia_FALSE|stem|33c09107535bf123|82c683cbf245ef1b|4888301e259fc6b7|659998524||t20735.6739280285s|s44b|44|rds|local|vector|||211.048||
+effects_std_Eurasia_FALSE|stem|43e0aea9329fb945|26909cb9feb6bc95|dfe7304fa72879e0|-1416047253||t20735.6740657338s|s183430b|183430|rds|local|vector|||0.225||
+summary_Sahul_FALSE|stem|33c09107535bf123|9b70077a32203c09|1fe8e8e8c1b0d2e8|522293776||t20735.6743830533s|s44b|44|rds|local|vector|||26.044||
+effects_std_Sahul_FALSE|stem|c0914114169c6ce9|8a45169b7d9c857c|69903a5272d1f991|1488088827||t20735.6743998679s|s184637b|184637|rds|local|vector|||0.083||
+fit_Global_TRUE|stem|b884596fe926a523|f24ab1bfcad2a9ec|711e0c1570015650|-779082390||t20735.9180375286s|s12789071855b|12789071855|rds|local|vector|||13862.945||
+summary_Global_TRUE|stem|33c09107535bf123|8271350f9beb649e|51b805f294045468|-152153046||t20735.9266054694s|s44b|44|rds|local|vector|||700.841||
+effects_std_Global_TRUE|stem|6436040fe306b3b6|e5ae43d778f375cf|104095055fe70302|-2099565619||t20735.9270202472s|s183595b|183595|rds|local|vector|||1.233||
+effects_std|stem|d2bb6366b58f3d72|9f94e9b3b980005d|e3cb2e54e1d08865|-63594374||t20735.9270217546s|s1101980b|1101980|rds|local|vector|||0||
+plot_regional_effects|stem|68fc61844db0f8af|702c00fc12d2b0af|45d1021a0de5c39e|1001845480||t20735.9270479809s|s10923202b|10923202|rds|local|vector|||1.635|Removed 63 rows containing missing values or values outside the scale range (`stat_slabinterval()`).. Removed 281 rows containing missing values or values outside the scale range (`stat_slabinterval()`).. Removed 344 rows containing missing values or values outside the scale range (`stat_slabinterval()`).|
 extract_cross_effects|function|e94f6e315e20eceb
 fit_model|function|b4e13000227a3d13
 plot_tree|function|f93bac01f0be76de
+print_model_summary|function|175d7507c9c7dbb7
 load_data|function|7c3a963e7727631b
+plot_regional_results|function|ef7cc3a7a0f43166
 load_tree|function|dcfe1ab6f3d97533
-plot_results|function|4ee98c2c7158bc45
-plot_mcc_tree|stem|16d111024590c431|0979ceba55c30d7b|820af2475aee7d98|1316125423||t20735.5215177264s|s1852137b|1852137|rds|local|vector|||1.038||
