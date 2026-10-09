@@ -2,7 +2,10 @@ options(tidyverse.quiet = TRUE)
 library(targets)
 library(tarchetypes)
 library(tidyverse)
-tar_option_set(packages = c("ape", "coevolve", "tidyverse"))
+tar_option_set(
+  packages = c("ape", "coevolve", "ggnewscale",
+               "ggtree", "phangorn", "tidyverse")
+)
 tar_source()
 
 # grid over model types
@@ -55,12 +58,18 @@ list(
   tar_target(tree_file, "tree/dplace2.nxs", format = "file"),
   tar_target(tree, load_tree(tree_file)),
 
+  # get mcc tree
+  tar_target(mcc_tree, phangorn::mcc(tree)),
+
+  # plot tree
+  tar_target(plot_mcc_tree, plot_tree(data, mcc_tree)),
+
   # get random sample of trees for analysis
-  tar_target(tree_sample, tree[sample(1:1000, size = 10)]),
+  tar_target(tree_sample, tree[sample(1:1000, size = 10)])#,
 
   # loop over model types and combine resulting effects
-  model_grid,
-  tar_combine(effects_std, model_grid[[2]])#,
+  #model_grid,
+  #tar_combine(effects_std, model_grid[[2]]),
 
   # plot results
   #tar_target(plot_effects, plot_results(effects_std))
