@@ -13,13 +13,15 @@ model_list <-
   tar_map(
 
     values = tribble(
-      ~region, ~geographic_control,
-      "Global", FALSE,
-      "Global", TRUE,
-      "Africa", FALSE,
-      "Americas", FALSE,
-      "Eurasia", FALSE,
-      "Sahul", FALSE
+      ~model, ~region, ~geo_control, ~abrahamic_control, ~log_lik,
+      "independent", "Global",   FALSE, FALSE, TRUE,
+      "dependent",   "Global",   FALSE, FALSE, TRUE,
+      "dependent",   "Global",   TRUE,  FALSE, FALSE,
+      "dependent",   "Africa",   FALSE, FALSE, FALSE,
+      "dependent",   "Americas", FALSE, FALSE, FALSE,
+      "dependent",   "Eurasia",  FALSE, FALSE, FALSE,
+      "dependent",   "Sahul",    FALSE, FALSE, FALSE,
+      "dependent",   "Global",   FALSE, TRUE,  FALSE
     ),
 
     # fit model
@@ -28,8 +30,11 @@ model_list <-
       fit_model(
         data = data,
         tree = tree_sample,
+        model = model,
         region = if (region == "Global") NULL else region,
-        geographic_control = geographic_control
+        geo_control = geo_control,
+        abrahamic_control = abrahamic_control,
+        log_lik = log_lik
       )
     ),
 
@@ -39,8 +44,9 @@ model_list <-
       print_model_summary(
         fit,
         paste0(
-          "outputs/summary_", region,
-          ifelse(geographic_control, "_withGeoControl", ""),
+          "outputs/summary_", model, "_", region,
+          ifelse(geo_control, "_withGeoControl", ""),
+          ifelse(abrahamic_control, "_withAbrahamicControl", ""),
           ".txt"
         )
       )
@@ -49,7 +55,7 @@ model_list <-
     # extract standardised cross-selection effects
     tar_target(
       effects_std,
-      extract_cross_effects(fit, region, geographic_control)
+      extract_cross_effects(fit, model, region, geo_control, abrahamic_control)
     )
 
   )
