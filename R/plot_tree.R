@@ -38,7 +38,7 @@ plot_tree <- function(data, mcc_tree) {
     scale_fill_brewer(
       name = "Political\ncomplexity",
       type = "seq",
-      palette = 5,
+      palette = 7,
       na.value = "grey95",
       guide = guide_legend(order = 1)
     ) +
@@ -58,7 +58,7 @@ plot_tree <- function(data, mcc_tree) {
       name = "Moralising\nhigh gods",
       values = c("#BDD7E7", "#08519C"),
       labels = c("Absent", "Present"),
-      na.value = "grey99"
+      na.value = "grey95"
     )
 
   # save
