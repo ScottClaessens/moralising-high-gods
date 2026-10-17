@@ -1,40 +1,40 @@
 options(tidyverse.quiet = TRUE)
+library(crew)
 library(targets)
 library(tarchetypes)
 library(tidyverse)
 tar_option_set(
-  packages = c("ape", "coevolve", "ggnewscale",
-               "ggtree", "phangorn", "tidyverse")
+  packages = c("ape", "brms", "coevolve", "ggnewscale",
+               "ggtree", "phangorn", "tidyverse"),
+  deployment = "main",
+  controller = crew_controller_local(workers = 10)
 )
 tar_source()
 
-# list model types
+# list coevolve model types
 model_list <-
   tar_map(
 
     values = tribble(
-      ~model, ~region, ~geo_control, ~abrahamic_control, ~log_lik,
-      "independent", "Global",   FALSE, FALSE, TRUE,
-      "dependent",   "Global",   FALSE, FALSE, TRUE,
-      "dependent",   "Global",   TRUE,  FALSE, FALSE,
-      "dependent",   "Africa",   FALSE, FALSE, FALSE,
-      "dependent",   "Americas", FALSE, FALSE, FALSE,
-      "dependent",   "Eurasia",  FALSE, FALSE, FALSE,
-      "dependent",   "Sahul",    FALSE, FALSE, FALSE,
-      "dependent",   "Global",   FALSE, TRUE,  FALSE
+      ~region, ~geo_control, ~abrahamic_control,
+      "Global",   FALSE, FALSE,
+      "Global",   TRUE,  FALSE,
+      "Global",   FALSE, TRUE,
+      "Africa",   FALSE, FALSE,
+      "Americas", FALSE, FALSE,
+      "Eurasia",  FALSE, FALSE,
+      "Sahul",    FALSE, FALSE
     ),
 
-    # fit model
+    # fit coevolve model
     tar_target(
       fit,
-      fit_model(
+      fit_coevolve_model(
         data = data,
-        tree = tree_sample,
-        model = model,
+        tree = tree[tree_ids],
         region = if (region == "Global") NULL else region,
         geo_control = geo_control,
-        abrahamic_control = abrahamic_control,
-        log_lik = log_lik
+        abrahamic_control = abrahamic_control
       )
     ),
 
@@ -44,7 +44,7 @@ model_list <-
       print_model_summary(
         fit,
         paste0(
-          "outputs/summary_", model, "_", region,
+          "outputs/summary_", region,
           ifelse(geo_control, "_withGeoControl", ""),
           ifelse(abrahamic_control, "_withAbrahamicControl", ""),
           ".txt"
@@ -55,7 +55,7 @@ model_list <-
     # extract standardised cross-selection effects
     tar_target(
       effects_std,
-      extract_cross_effects(fit, model, region, geo_control, abrahamic_control)
+      extract_cross_effects(fit, region, geo_control, abrahamic_control)
     )
 
   )
@@ -88,9 +88,21 @@ list(
   tar_target(plot_mcc_tree, plot_tree(data, mcc_tree)),
 
   # get random sample of trees for analysis
-  tar_target(tree_sample, tree[sample(1:1000, size = 10)]),
+  tar_target(tree_ids, sample(1:1000, size = 10)),
 
-  # loop over model types and combine resulting effects
+  # fit brms model to different trees
+  tar_target(
+    fit_signal,
+    fit_brms_model(data, tree, id = tree_ids),
+    pattern = map(tree_ids),
+    iteration = "list",
+    deployment = "worker"
+  ),
+
+  # combine brms model draws
+  tar_target(signal_draws, bind_rows(lapply(fit_signal, as_draws_df))),
+
+  # loop over coevolve model types and combine resulting effects
   model_list,
   tar_combine(effects_std, model_list[["effects_std"]]),
 

@@ -2,9 +2,6 @@
 #'
 #' @param data Tibble of D-PLACE data
 #' @param tree Posterior set of phylogenetic trees
-#' @param model Character. Which model to fit. One of: "dependent",
-#'   "independent". The dependent model allows both variables to coevolve. The
-#'   independent model constrains both variables to evolve independently.
 #' @param region Character. World region to subset to. If \code{NULL} (default),
 #'   the full global sample is used. Otherwise, the dataset is subsetted to only
 #'   include societies in this world region.
@@ -18,34 +15,21 @@
 #'   Abrahamized societies. If \code{FALSE} (default), the full sample is used.
 #'   If \code{TRUE}, deeply Abrahamized societies are excluded from the
 #'   analysis.
-#' @param log_lik Logical. Whether or not to return the log likelihood for model
-#'   comparison.
 #'
 #' @returns A coevfit object
 #'
-fit_model <- function(data, tree, model = "dependent", region = NULL,
-                      geo_control = FALSE, abrahamic_control = FALSE,
-                      log_lik = FALSE) {
-
-  # if independent model is declared, set effects matrix
-  if (model == "independent") {
-    effects_mat <-
-      matrix(
-        c(TRUE, FALSE,
-          FALSE, TRUE),
-        ncol = 2,
-        nrow = 2,
-        byrow = TRUE,
-        dimnames = list(
-          c("moralising_high_gods", "political_complexity"),
-          c("moralising_high_gods", "political_complexity")
-        )
-      )
-  }
+fit_coevolve_model <- function(data, tree, region = NULL, geo_control = FALSE,
+                               abrahamic_control = FALSE) {
 
   # if region declared, subset data and tree
   if (!is.null(region)) {
     data <- filter(data, region == .env$region)
+    tree <- ape::keep.tip.multiPhylo(tree, data$xd_id)
+  }
+
+  # if abrahamic control, subset data and tree
+  if (abrahamic_control) {
+    data <- filter(data, abrahamization %in% c("0", "1"))
     tree <- ape::keep.tip.multiPhylo(tree, data$xd_id)
   }
 
@@ -54,12 +38,6 @@ fit_model <- function(data, tree, model = "dependent", region = NULL,
     lon_lat <- transmute(data, id = xd_id, longitude, latitude)
   } else {
     lon_lat <- NULL
-  }
-
-  # if abrahamic control, subset data and tree
-  if (abrahamic_control) {
-    data <- filter(data, abrahamization %in% c("0", "1"))
-    tree <- ape::keep.tip.multiPhylo(tree, data$xd_id)
   }
 
   # fit model
@@ -74,7 +52,6 @@ fit_model <- function(data, tree, model = "dependent", region = NULL,
     lon_lat = lon_lat,
     dist_k = 20,
     estimate_correlated_drift = FALSE,
-    log_lik = log_lik,
     nuts_sampler = "nutpie",
     iter_warmup = 3000,
     iter_sampling = 1500,
