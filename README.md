@@ -12,7 +12,15 @@ To run this code, you will need to [install R](https://www.r-project.org/) and
 the following R packages:
 
 ```r
-install.packages(c("ape", "coevolve", "targets", "tidyverse"))
+# install packages from CRAN
+install.packages(
+  c("ape", "BiocManager", "brms", "devtools", "ggnewscale", "phangorn", 
+    "tarchetypes", "targets", "tidyverse")
+)
+
+# install non-CRAN packages
+devtools::install_github("coevolve")
+BiocManager::install("ggtree")
 ```
 
 ### Execute code
