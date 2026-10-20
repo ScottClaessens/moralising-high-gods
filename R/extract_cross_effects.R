@@ -1,14 +1,13 @@
 #' Extract standardised cross-selection effects from a fitted model
 #'
 #' @param fit Fitted model of class coevfit
-#' @param region World region to be included in output tibble
+#' @param region World region(s) to be included in output tibble
+#' @param abrahamization Abrahamization level(s) to be included in output tibble
 #' @param geo_control Geographic control option to be included in output tibble
-#' @param abrahamic_control Abrahamic control option to be included in output
-#'   tibble
 #'
 #' @returns A tibble
 #'
-extract_cross_effects <- function(fit, region, geo_control, abrahamic_control) {
+extract_cross_effects <- function(fit, region, abrahamization, geo_control) {
 
   # get cross-selection effects
   draws <- fit$fit$draws_array
@@ -26,9 +25,9 @@ extract_cross_effects <- function(fit, region, geo_control, abrahamic_control) {
 
   # return posterior draws
   tibble(
-    region = region,
+    region = list(region),
+    abrahamization = list(abrahamization),
     geo_control = geo_control,
-    abrahamic_control = abrahamic_control,
     direction = c(
       "Moralising high gods -> Political complexity",
       "Political complexity -> Moralising high gods"

@@ -2,34 +2,34 @@
 #'
 #' @param data Tibble of D-PLACE data
 #' @param tree Posterior set of phylogenetic trees
-#' @param region Character. World region to subset to. If \code{NULL} (default),
-#'   the full global sample is used. Otherwise, the dataset is subsetted to only
-#'   include societies in this world region.
+#' @param region Character. World region(s) to subset to. If \code{NULL}
+#'   (default), the dataset is not subsetted by region. Otherwise, the dataset
+#'   is subsetted to only include societies in this world region (or multiple
+#'   world regions).
+#' @param abrahamization Character. Abrahamization level(s) to subset to. If
+#'   \code{NULL} (default), the dataset is not subsetted by Abrahamization
+#'   level. Otherwise, the dataset is subsetted to include only societies with
+#'   this Abrahamization level (or multiple levels).
 #' @param geo_control Logical. Whether or not to include the geographic control
 #'   over latitude and longitude values. If \code{FALSE} (default), the model is
 #'   fitted without the geographic control. If \code{TRUE}, latitude and
 #'   longitude values are passed to the model and the geographic control is
 #'   included.
-#' @param abrahamic_control Logical. Whether or not to control for Abrahamic
-#'   influence by subsetting the data to non-Abrahamized and superficially
-#'   Abrahamized societies. If \code{FALSE} (default), the full sample is used.
-#'   If \code{TRUE}, deeply Abrahamized societies are excluded from the
-#'   analysis.
 #'
 #' @returns A coevfit object
 #'
-fit_coevolve_model <- function(data, tree, region = NULL, geo_control = FALSE,
-                               abrahamic_control = FALSE) {
+fit_coevolve_model <- function(data, tree, region = NULL, abrahamization = NULL,
+                               geo_control = FALSE) {
 
   # if region declared, subset data and tree
   if (!is.null(region)) {
-    data <- filter(data, region == .env$region)
+    data <- filter(data, region %in% .env$region)
     tree <- ape::keep.tip.multiPhylo(tree, data$xd_id)
   }
 
-  # if abrahamic control, subset data and tree
-  if (abrahamic_control) {
-    data <- filter(data, abrahamization %in% c("0", "1"))
+  # if abrahamization level(s) declared, subset data and tree
+  if (!is.null(abrahamization)) {
+    data <- filter(data, abrahamization %in% .env$abrahamization)
     tree <- ape::keep.tip.multiPhylo(tree, data$xd_id)
   }
 

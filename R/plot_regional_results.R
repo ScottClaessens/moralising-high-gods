@@ -19,7 +19,7 @@ plot_regional_results <- function(effects_std) {
   # get data for plot
   data <-
     effects_std |>
-    filter(!geo_control) |>
+    filter(is.null(abrahamization) & !geo_control) |>
     mutate(
       region = factor(
         case_when(

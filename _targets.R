@@ -11,20 +11,23 @@ tar_option_set(
 )
 tar_source()
 
-# list coevolve model types
+# loop over coevolve model types
 model_list <-
   tar_map(
 
+    # set up target names and values
     values = tribble(
-      ~region, ~geo_control, ~abrahamic_control,
-      "Global",   FALSE, FALSE,
-      "Global",   TRUE,  FALSE,
-      "Global",   FALSE, TRUE,
-      "Africa",   FALSE, FALSE,
-      "Americas", FALSE, FALSE,
-      "Eurasia",  FALSE, FALSE,
-      "Sahul",    FALSE, FALSE
+      ~target_name,   ~region,    ~abrahamization, ~geo_control,
+      "Global",       NULL,       NULL,            FALSE,
+      "Global_Geo",   NULL,       NULL,            TRUE,
+      "Global_Abr01", NULL,       c("0","1"),      FALSE,
+      "Global_Abr0",  NULL,       "0",             FALSE,
+      "Africa",       "Africa",   NULL,            FALSE,
+      "Americas",     "Americas", NULL,            FALSE,
+      "Eurasia",      "Eurasia",  NULL,            FALSE,
+      "Sahul",        "Sahul",    NULL,            FALSE
     ),
+    names = target_name,
 
     # fit coevolve model
     tar_target(
@@ -32,30 +35,22 @@ model_list <-
       fit_coevolve_model(
         data = data,
         tree = tree[tree_ids],
-        region = if (region == "Global") NULL else region,
-        geo_control = geo_control,
-        abrahamic_control = abrahamic_control
+        region = region,
+        abrahamization = abrahamization,
+        geo_control = geo_control
       )
     ),
 
     # print model summary
     tar_target(
       summary,
-      print_model_summary(
-        fit,
-        paste0(
-          "outputs/summary_", region,
-          ifelse(geo_control, "_withGeoControl", ""),
-          ifelse(abrahamic_control, "_withAbrahamicControl", ""),
-          ".txt"
-        )
-      )
+      print_model_summary(fit, region, abrahamization, geo_control)
     ),
 
     # extract standardised cross-selection effects
     tar_target(
       effects_std,
-      extract_cross_effects(fit, region, geo_control, abrahamic_control)
+      extract_cross_effects(fit, region, abrahamization, geo_control)
     )
 
   )
