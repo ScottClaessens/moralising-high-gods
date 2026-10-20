@@ -23,7 +23,9 @@ effects_std|stem|470865302fa9729a|def6ea8dea70db57|0fac158176fc9a66|-63594374||t
 plot_regional_effects|stem|a515a0adbd26ac27|702c00fc12d2b0af|ec734985dc3d311f|1001845480||t20742.9430156656s|s13022672b|13022672|rds|local|vector|||0.808|Removed 322 rows containing missing values or values outside the scale range (`stat_slabinterval()`).. Removed 1659 rows containing missing values or values outside the scale range (`stat_slabinterval()`).. Removed 1981 rows containing missing values or values outside the scale range (`stat_slabinterval()`).|
 fit_Global_Abr0|stem|f107213961d0ae70|7ce9bf937447b209|8bb01246286e33e3|-1977264941||t20745.4242843359s|s7209735209b|7209735209|rds|local|vector|||1907.123||
 summary_Global_Abr0|stem|33c09107535bf123|55fbd50fd2fa6f20|f316aab1e7fc7b62|1992998629||t20745.4476891999s|s44b|44|rds|local|vector|||392.992||
+effects_std_Global_Abr0|stem|45f6252e7af675b5|2b5df605877cf675|8bd6fb21a914370e|-5718488||t20745.4559816659s|s183581b|183581|rds|local|vector|||0.526||
 extract_cross_effects|function|c12cbcbf8a04db64
+plot_phylogenetic_signal|function|74bcfb9b175484ca
 plot_tree|function|bfec95519039aa34
 print_model_summary|function|18ae196151134763
 fit_brms_model|function|5875c66e413db0cc
@@ -31,4 +33,4 @@ load_data|function|7c3a963e7727631b
 fit_coevolve_model|function|a8d13f527d04528f
 plot_regional_results|function|4f7babbb810186c6
 load_tree|function|dcfe1ab6f3d97533
-effects_std_Global_Abr0|stem|45f6252e7af675b5|2b5df605877cf675|8bd6fb21a914370e|-5718488||t20745.4559816659s|s183581b|183581|rds|local|vector|||0.526||
+plot_signal|stem|4b1279ca3235e697|9ca1fbaed48037eb|0b4aa0590b3f9398|581667988||t20746.4652683898s|s227070676b|227070676|rds|local|vector|||0.425||

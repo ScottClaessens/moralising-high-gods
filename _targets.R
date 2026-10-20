@@ -97,6 +97,9 @@ list(
   # combine brms model draws
   tar_target(signal_draws, bind_rows(lapply(fit_signal, as_draws_df))),
 
+  # plot phylogenetic signal and correlation
+  tar_target(plot_signal, plot_phylogenetic_signal(signal_draws)),
+
   # loop over coevolve model types and combine resulting effects
   model_list,
   tar_combine(effects_std, model_list[["effects_std"]]),
