@@ -10,12 +10,12 @@
 extract_cross_effects <- function(fit, region, abrahamization, geo_control) {
 
   # get cross-selection effects
-  draws <- fit$fit$draws_array
+  draws <- posterior::as_draws_array(fit)
   cross_effect_p_to_m <- as.numeric(draws[, , "A[1,2]"])
   cross_effect_m_to_p <- as.numeric(draws[, , "A[2,1]"])
 
   # standardise cross-selection effects
-  ntips <- length(fit$tree[[1]]$tip.label)
+  ntips <- fit@par_dims$yrep[2]
   eta_tips_m <- sapply(1:ntips, \(x) draws[, , paste0("eta[1,", x, ",1]")])
   eta_tips_p <- sapply(1:ntips, \(x) draws[, , paste0("eta[1,", x, ",2]")])
   eta_sd_m <- apply(eta_tips_m, 1, sd)

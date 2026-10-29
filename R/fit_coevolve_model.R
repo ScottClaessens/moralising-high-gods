@@ -40,23 +40,53 @@ fit_coevolve_model <- function(data, tree, region = NULL, abrahamization = NULL,
     lon_lat <- NULL
   }
 
-  # fit model
-  coevolve::coev_fit(
-    data = data,
-    variables = list(
-      moralising_high_gods = "bernoulli_logit",
-      political_complexity = "ordered_logistic"
+  # get data list for stan
+  stan_data <-
+    coevolve::coev_make_standata(
+      data = data,
+      variables = list(
+        moralising_high_gods = "bernoulli_logit",
+        political_complexity = "ordered_logistic"
+      ),
+      id = "xd_id",
+      tree = tree,
+      lon_lat = lon_lat,
+      dist_k = 20,
+      estimate_correlated_drift = FALSE
+    )
+
+  # get stan code
+  stan_code <-
+    coevolve::coev_make_stancode(
+      data = data,
+      variables = list(
+        moralising_high_gods = "bernoulli_logit",
+        political_complexity = "ordered_logistic"
+      ),
+      id = "xd_id",
+      tree = tree,
+      lon_lat = lon_lat,
+      dist_k = 20,
+      estimate_correlated_drift = FALSE
+    )
+
+  # compile model
+  model <- stan_model(model_code = stan_code)
+
+  # fit model using rstan
+  rstan::sampling(
+    object = model,
+    data = stan_data,
+    pars = c(
+      "VCV_tips", "L_VCV_tips", "terminal_drift",
+      "z_drift", "dist_v", "yrep", "tdrift"
     ),
-    id = "xd_id",
-    tree = tree,
-    lon_lat = lon_lat,
-    dist_k = 20,
-    estimate_correlated_drift = FALSE,
-    nuts_sampler = "nutpie",
-    iter_warmup = 3000,
-    iter_sampling = 1500,
-    chains = 8,
-    cores = 8L,
+    include = FALSE,
+    iter = 1000,
+    warmup = 500,
+    control = list(adapt_delta = 0.95),
+    chains = 4,
+    cores = 4L,
     seed = 123
   )
 

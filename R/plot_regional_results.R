@@ -19,15 +19,17 @@ plot_regional_results <- function(effects_std) {
   # get data for plot
   data <-
     effects_std |>
+    rowwise() |>
     filter(is.null(abrahamization) & !geo_control) |>
+    unnest(region, keep_empty = TRUE) |>
     mutate(
       region = factor(
         case_when(
-          region == "Global"   ~ regions[1],
           region == "Africa"   ~ regions[2],
           region == "Americas" ~ regions[3],
           region == "Eurasia"  ~ regions[4],
-          region == "Sahul"    ~ regions[5]
+          region == "Sahul"    ~ regions[5],
+          TRUE                 ~ regions[1]
         ),
         levels = regions
       )

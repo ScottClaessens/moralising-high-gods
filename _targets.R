@@ -1,13 +1,25 @@
 options(tidyverse.quiet = TRUE)
 library(crew)
+library(crew.cluster)
 library(targets)
 library(tarchetypes)
 library(tidyverse)
 tar_option_set(
   packages = c("ape", "brms", "coevolve", "ggnewscale",
-               "ggtree", "phangorn", "tidyverse"),
-  deployment = "main",
-  controller = crew_controller_local(workers = 10)
+               "ggtree", "phangorn", "rstan", "tidyverse"),
+  garbage_collection = 1,
+  controller = crew_controller_slurm(
+    workers = 10,
+    options_cluster = crew_options_slurm(
+      script_lines = c(
+        "#SBATCH --account=arch039044",
+        "module load languages/R/4.5.1"
+      ),
+      memory_gigabytes_required = 50,
+      cpus_per_task = 4,
+      time_minutes = 2 * 24 * 60
+    )
+  )
 )
 tar_source()
 
@@ -39,12 +51,6 @@ model_list <-
         abrahamization = abrahamization,
         geo_control = geo_control
       )
-    ),
-
-    # print model summary
-    tar_target(
-      summary,
-      print_model_summary(fit, region, abrahamization, geo_control)
     ),
 
     # extract standardised cross-selection effects
@@ -83,7 +89,7 @@ list(
   tar_target(plot_mcc_tree, plot_tree(data, mcc_tree)),
 
   # get random sample of trees for analysis
-  tar_target(tree_ids, sample(1:1000, size = 10)),
+  tar_target(tree_ids, sample(1:1000, size = 100)),
 
   # fit brms model to different trees
   tar_target(
@@ -105,6 +111,15 @@ list(
   tar_combine(effects_std, model_list[["effects_std"]]),
 
   # plot regional results
-  tar_target(plot_regional_effects, plot_regional_results(effects_std))
+  tar_target(
+    plot_regional_effects,
+    plot_regional_results(effects_std)
+  ),
+
+  # plot abrahamization results
+  tar_target(
+    plot_abrahamization_effects,
+    plot_abrahamization_results(effects_std)
+  )
 
 )

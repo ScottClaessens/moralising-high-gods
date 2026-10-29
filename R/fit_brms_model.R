@@ -1,7 +1,7 @@
 #' Fit brms model to calculate phylogenetic signal and correlation
 #'
-#' @param data Tibble of DPLACE data
-#' @param tree Treeset multiphylo object
+#' @param data Tibble of D-PLACE data
+#' @param tree Posterior set of phylogenetic trees
 #' @param id Tree ID to use for the model
 #'
 #' @returns Fitted model brmsfit object
@@ -42,6 +42,8 @@ fit_brms_model <- function(data, tree, id) {
       prior(lkj(3), class = cor)
     ),
     backend = "cmdstanr",
+    iter = 1000,
+    warmup = 500,
     chains = 1,
     cores = 1,
     seed = 123
