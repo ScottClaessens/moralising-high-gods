@@ -14,12 +14,13 @@ the following R packages:
 ```r
 # install packages from CRAN
 install.packages(
-  c("ape", "BiocManager", "brms", "devtools", "ggnewscale", "phangorn", 
-    "tarchetypes", "targets", "tidyverse")
+  c("ape", "BiocManager", "brms", "crew", "crew.cluster", "ggnewscale", 
+    "phangorn", "rstan", "tarchetypes", "targets", "tidyverse")
 )
 
 # install non-CRAN packages
-devtools::install_github("coevolve")
+install.packages("coevolve", repos = c('https://ropensci.r-universe.dev',
+                                       'https://cloud.r-project.org'))
 BiocManager::install("ggtree")
 ```
 
