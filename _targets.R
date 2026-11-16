@@ -9,15 +9,15 @@ tar_option_set(
                "ggtree", "phangorn", "rstan", "tidyverse"),
   garbage_collection = 1,
   controller = crew_controller_slurm(
-    workers = 10,
+    workers = 8,
     options_cluster = crew_options_slurm(
       script_lines = c(
         "#SBATCH --account=arch039044",
         "module load languages/R/4.5.1"
       ),
-      memory_gigabytes_required = 50,
-      cpus_per_task = 4,
-      time_minutes = 2 * 24 * 60
+      memory_gigabytes_required = 200,
+      cpus_per_task = 1,
+      time_minutes = 4 * 60
     )
   )
 )
@@ -52,6 +52,9 @@ model_list <-
         geo_control = geo_control
       )
     ),
+
+    # summarise model
+    tar_target(model_summary, summary(fit)),
 
     # extract standardised cross-selection effects
     tar_target(
@@ -96,8 +99,7 @@ list(
     fit_signal,
     fit_brms_model(data, tree, id = tree_ids),
     pattern = map(tree_ids),
-    iteration = "list",
-    deployment = "worker"
+    iteration = "list"
   ),
 
   # combine brms model draws
